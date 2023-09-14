@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 import pytesseract
 import re
+import pyodbc
 
 def img_to_gray(image_path):
     image = Image.open(image_path)
@@ -93,3 +94,41 @@ def new_process_image(image_path):
                 student_data[student_name_clean] = {"ID": student_id, "Status": "Present"}
 
     return student_data
+
+
+def parse_xml(xml_path):
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+    student_info = {}
+    for student in root.findall('student'):
+        index = student.get('index')
+        name = student.find('name').text
+        student_info[index] = name
+    return student_info
+
+def store_to_db(data):
+    conn = pyodbc.connect(
+        r'Driver={ODBC Driver 17 for SQL Server};'
+        r'Server=ISHAN\SQLEXPRESS;'
+        r'Database=AttendanceDb;'
+        r'UID=ick;'
+        r'PWD=Ishan,1998'
+    )
+
+    c = conn.cursor()
+    c.execute("IF OBJECT_ID('attendance', 'U') IS NULL CREATE TABLE attendance (ID NVARCHAR(50), Name NVARCHAR(50), "
+              "Status NVARCHAR(50))")
+
+    try:
+        for name, info in data.items():
+            insert_query = "INSERT INTO attendance (name, id, status) VALUES (?, ?, ?)"
+            c.execute(insert_query, name, info['ID'], info['Status'])
+
+        conn.commit()
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    finally:
+        c.close()
+        conn.close()
