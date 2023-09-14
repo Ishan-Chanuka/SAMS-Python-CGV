@@ -1,3 +1,6 @@
+import pyodbc
+import matplotlib.pyplot as plt
+
 def fetch_attendance(student_id):
     conn = pyodbc.connect(
         r'Driver={ODBC Driver 17 for SQL Server};'

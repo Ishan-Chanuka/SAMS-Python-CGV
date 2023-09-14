@@ -1,3 +1,7 @@
+from sklearn import svm
+import cv2
+import numpy as np
+
 def extract_features(image_path):
     img = cv2.imread(image_path, 0)
     if img is None:

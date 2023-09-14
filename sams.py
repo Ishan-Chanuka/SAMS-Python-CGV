@@ -4,6 +4,7 @@ import cv2
 import pytesseract
 import re
 import pyodbc
+import xml.etree.ElementTree as ET
 
 def img_to_gray(image_path):
     image = Image.open(image_path)
