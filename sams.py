@@ -133,22 +133,3 @@ def store_to_db(data):
         c.close()
         conn.close()
 
-def main(xml_path, image_path):
-    processed_data = new_process_image(image_path)
-    student_info = parse_xml(xml_path)
-
-    # dummy_data = {
-    #     'MS Dilshanika Perera  hl': {'ID': '10000409', 'Status': 'Present'},
-    #     'C W M AShehan Abeyrathne a.': {'ID': '10009301', 'Status': 'Present'},
-    #     'BAKM Chithrananda  i': {'ID': '10009302', 'Status': 'Present'},
-    #     'W Shashini Minosha De Silva': {'ID': '10009303', 'Status': 'Present'},
-    #     'K  Udara Maduranga Liyanage i': {'ID': '10009304', 'Status': 'Present'},
-    #     'a  Hansa Anuradha Wickramanayake': {'ID': '10009306', 'Status': 'Present'}
-    # }
-
-    # print(processed_data)
-
-    store_to_db(processed_data)
-
-if __name__ == "__main__":
-    main('info.xml', '4.jpg')
