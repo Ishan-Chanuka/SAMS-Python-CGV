@@ -29,3 +29,24 @@ def train_classifier():
     clf = svm.SVC()
     clf.fit(X, y)
     return clf
+
+def investigate(clf, image_path):
+    features = extract_features(image_path)
+    prediction = clf.predict([features])
+    return prediction
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) < 2:
+        print("Usage: python investigate.py <student_id>")
+        sys.exit(1)
+
+    student_id = sys.argv[1]
+    clf = train_classifier()
+
+    if clf is not None:
+        prediction = investigate(clf, 'new_signature.png')
+        print(f'Investigation Result for {student_id}: {prediction}')
+    else:
+        print("Error: Classifier could not be trained.")
